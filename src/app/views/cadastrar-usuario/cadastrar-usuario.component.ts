@@ -1,4 +1,9 @@
+import { NotificationService } from './../../services/notification.service';
+import { User } from './../../models/user';
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cadastrar-usuario',
@@ -7,9 +12,35 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CadastrarUsuarioComponent implements OnInit {
 
-  constructor() { }
+  public formCadastro: FormGroup;
+
+  constructor(
+    fb: FormBuilder, 
+    private authService: AuthService, 
+    private router: Router, 
+    private notification: NotificationService) { 
+    this.formCadastro = fb.group({
+      email: ['', [Validators.required]],
+      senha: ['', [Validators.required]]
+    })
+  }
 
   ngOnInit(): void {
+  }
+
+  public signInGoogle(): void {
+    this.authService.authenticateByGoogle().subscribe(credencials => {
+      this.notification.showMessage("Bem-vindo(a)!");
+      this.router.navigate(["/home"]);
+    })
+  }
+
+  public createUserEmailAndPassword(): void {
+    const user: User = this.formCadastro.value;
+    this.authService.createUserEmailAndPassword(user).subscribe(Response => {
+      this.notification.showMessage("Usuário cadastrado");
+      this.router.navigate(["/login"]);
+    })
   }
 
 }
