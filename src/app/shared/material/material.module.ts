@@ -3,6 +3,8 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatMenuModule} from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
+import {MatTableModule} from '@angular/material/table';
+import {MatInputModule} from '@angular/material/input';
 
 
 
@@ -11,7 +13,9 @@ import { MatButtonModule } from '@angular/material/button';
   MatSnackBarModule,
   MatToolbarModule,
   MatMenuModule,
-  MatButtonModule
+  MatButtonModule,
+  MatTableModule,
+  MatInputModule
  ]
 })
 export class MaterialModule { }
