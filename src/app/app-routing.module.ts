@@ -1,3 +1,4 @@
+import { EditCollaboratorComponent } from './views/edit-collaborator/edit-collaborator.component';
 
 import { DashboardComponent } from './views/dashboard/dashboard.component';
 import { AuthGuard } from './guards/auth.guard';
@@ -42,6 +43,12 @@ const routes: Routes = [
     component: NewCollaboratorComponent,
     canActivate: [ AuthGuard ],
     title: "Novo colaborador | Collaborators"
+  },
+  {
+    path: 'dashboard/edit/:id',
+    component: EditCollaboratorComponent,
+    canActivate: [ AuthGuard ],
+    title: "Editar colaborador | Collaborators"
   }
 ];
 

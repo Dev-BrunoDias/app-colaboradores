@@ -1,3 +1,5 @@
+import { NotificationService } from './../../services/notification.service';
+import { CollaboratorService } from './../../services/collaborator.service';
 import { Collaborator } from './../../models/collaborator';
 import { Component, OnInit } from '@angular/core';
 
@@ -25,9 +27,26 @@ export class DashboardComponent implements OnInit {
   }
   ];
 
-  constructor() { }
+  constructor(
+    private collaboratorService: CollaboratorService,
+    private notification: NotificationService
+    ) { }
 
   ngOnInit(): void {
+    this.initilizeTable();
+  }
+
+  private initilizeTable(): void {
+    this.collaboratorService.findAll().subscribe(collaborators => {
+      this.dataSource = collaborators;
+    })
+  }
+
+  public deleteCollaborator(id: string): void {
+    this.collaboratorService.deleteCollaborator(id).subscribe(Response => {
+      this.notification.showMessage("Apagado.");
+      this.initilizeTable();
+    });
   }
 
 }
