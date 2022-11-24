@@ -20,7 +20,7 @@ export class CadastrarUsuarioComponent implements OnInit {
     private router: Router, 
     private notification: NotificationService) { 
     this.formCadastro = fb.group({
-      email: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
       senha: ['', [Validators.required]]
     })
   }
@@ -36,11 +36,15 @@ export class CadastrarUsuarioComponent implements OnInit {
   }
 
   public createUserEmailAndPassword(): void {
+    if(this,this.formCadastro.valid){
     const user: User = this.formCadastro.value;
     this.authService.createUserEmailAndPassword(user).subscribe(Response => {
       this.notification.showMessage("Usuário cadastrado");
       this.router.navigate(["/login"]);
     })
+  } else {
+    this.notification.showMessage("Dados inválidos.")
   }
+}
 
 }

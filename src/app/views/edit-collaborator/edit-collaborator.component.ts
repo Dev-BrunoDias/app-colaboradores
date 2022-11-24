@@ -1,3 +1,4 @@
+import { UploadService } from './../../services/upload.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CollaboratorService } from './../../services/collaborator.service';
 import { Collaborator } from './../../models/collaborator';
@@ -14,13 +15,15 @@ export class EditCollaboratorComponent implements OnInit {
 
   public collaborator!: Collaborator;
 
+  public isLoadUpload: boolean = false;
+
   constructor(
-    fb:FormBuilder,
     private notification: NotificationService,
     private collaboratorService: CollaboratorService,
     private router: Router,
-    private route: ActivatedRoute
-    ) { }
+    private route: ActivatedRoute,
+    private uploadService: UploadService
+  ) { }
 
   ngOnInit(): void {
     this.initilizeFields();
@@ -45,4 +48,16 @@ export class EditCollaboratorComponent implements OnInit {
     }
   }
 
+  public uploadFile(event: any): void {
+    this.isLoadUpload = true;
+    const file: File = event.target.files[0];
+    this.uploadService.uploadFoto(file).subscribe(uploadResult  => {
+      this.isLoadUpload = false;
+      const storageReference = uploadResult.ref;
+      const promiseFileUrl = storageReference.getDownloadURL();
+      promiseFileUrl.then((fotoUrl: string) => {
+        this.collaborator.fotoUrl = fotoUrl;
+      })
+    });
+  }
 }

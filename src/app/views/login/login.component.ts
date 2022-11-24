@@ -15,13 +15,13 @@ export class LoginComponent implements OnInit {
   public formLogin: FormGroup;
 
   constructor(
-    fb: FormBuilder, 
+    fb: FormBuilder,
     private authService: AuthService,
     private notification: NotificationService,
     private router: Router
-    ) { 
+  ) {
     this.formLogin = fb.group({
-      email: ['', [Validators.required]],
+      email: ['', [Validators.required,Validators.email]],
       senha: ['', [Validators.required]]
     })
   }
@@ -37,10 +37,15 @@ export class LoginComponent implements OnInit {
   }
 
   public signEmailAndPassword(): void {
+    if(this.formLogin.valid){
     const user: User = this.formLogin.value;
     this.authService.authenticateByEmailAndPassword(user).subscribe(credencials => {
       this.notification.showMessage("Bem-vindo(a)!");
       this.router.navigate(["/home"])
     });
+  } else {
+    this.notification.showMessage("Dados inválidos.")
   }
+}
+  
 }
